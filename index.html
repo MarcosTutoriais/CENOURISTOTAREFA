@@ -1,331 +1,425 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cenouristos Quizizz</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
-
+  <title>C.V.A | Auto Tarefas</title>
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(ellipse at top left, #0f172a, #050910);
-      color: #e0f2fe;
-      min-height: 100vh;
-      overflow-x: hidden;
+      margin:0;
+      font-family:"Segoe UI",Arial,sans-serif;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:#fff;
+      background: radial-gradient(circle at center, #000000 40%, #0a0a0a 100%);
+      overflow: hidden;
     }
 
-    .glass {
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(100, 149, 237, 0.15);
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.1);
+    canvas#snow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .neon-text {
-      background: linear-gradient(to right, #38bdf8, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .container{
+      position: relative;
+      text-align:center;
+      background:rgba(255,255,255,0.08);
+      border:2px solid rgba(255,255,255,0.2);
+      backdrop-filter:blur(15px);
+      padding:40px;
+      border-radius:20px;
+      box-shadow:0 0 40px rgba(0,0,0,0.9);
+      width:90%;
+      max-width:350px;
+      transition: box-shadow 0.3s ease-in-out;
+      z-index: 1;
+    }
+    .container:hover{
+      box-shadow:0 0 60px rgba(255,0,0,0.5), 0 0 100px rgba(0,80,255,0.5);
     }
 
-    .pulse-glow {
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-      animation: pulse 2.5s infinite;
+    .logo-imagem {
+  width: 150px;
+  height: 150px; /* força ficar quadrada */
+  object-fit: cover; /* garante que não distorce */
+  border-radius: 20%; /* deixa redonda */
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(255,0,0,0.7), 0 0 25px rgba(0,80,255,0.7);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+    @keyframes glow {
+      from { box-shadow:0 0 15px rgba(255,0,0,0.7),0 0 25px rgba(0,80,255,0.7); }
+      to { box-shadow:0 0 35px rgba(255,0,0,1),0 0 55px rgba(0,80,255,1); }
     }
 
-    @keyframes pulse {
-      0%, 100% {
-        box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
-      }
-      50% {
-        box-shadow: 0 0 30px rgba(56, 189, 248, 0.7);
-      }
+    h1 {margin-bottom:5px;font-weight:600;letter-spacing:1px;}
+    p {margin-bottom:20px;color:#ccc;font-size:0.9em;}
+
+    .input-group input{
+      padding:12px;margin:10px 0;width:100%;
+      border:none;border-radius:8px;outline:none;
+      background:rgba(255,255,255,0.15);color:white;font-size:1em;
+      transition:0.3s;
+    }
+    .input-group input:focus{background:rgba(255,255,255,0.3);}
+
+    .entrar input[type="submit"]{
+      margin-top:20px;padding:12px 25px;width:100%;font-size:1em;font-weight:bold;
+      cursor:pointer;border:none;border-radius:8px;
+      background:linear-gradient(90deg,#e60000,#0051ff);color:white;
+      box-shadow:0 5px 15px rgba(0,0,0,0.7);
+      transition:transform 0.3s, box-shadow 0.3s;
+    }
+    .entrar input[type="submit"]:hover{
+      transform:scale(1.05);
+      box-shadow:0 0 25px rgba(255,0,0,0.7),0 0 40px rgba(0,80,255,0.7);
     }
 
-    .fade-up {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.7s forwards ease-in-out;
+    #loading-screen{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.9);color:white;
+      display:none;justify-content:center;align-items:center;z-index:9999;
     }
+    .loading-container{text-align:center;animation:fadeIn 0.5s ease-in-out;}
+    .loading-container p{font-size:1.3em;margin-bottom:20px;}
+    .loading-container img{width:80px;animation:spin 2s linear infinite;}
+    @keyframes spin{100%{transform:rotate(360deg);}}
+    @keyframes fadeIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
 
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    #toasts{
+      position:fixed;top:20px;right:20px;display:flex;
+      flex-direction:column;gap:10px;z-index:10000;
+    }
+    .toast{
+      background:rgba(30,30,30,0.95);color:white;padding:15px 20px;
+      border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.5);
+      font-size:0.9em;min-width:220px;max-width:320px;
+      animation:popIn 0.4s ease forwards;
+    }
+    .toast.success{border-left:5px solid #00ff88;}
+    .toast.error{border-left:5px solid #e60000;}
+    .toast.info{border-left:5px solid #0051ff;}
+    @keyframes popIn{
+      from{opacity:0;transform:translateX(100%) scale(0.9);}
+      to{opacity:1;transform:translateX(0) scale(1);}
     }
   </style>
 </head>
-<body class="px-4 py-12">
+<body>
+  <canvas id="snow"></canvas>
 
-  <!-- Cabeçalho -->
-  <header class="text-center fade-up">
-    <h1 class="text-5xl font-bold neon-text drop-shadow-lg">Cenouristos Quizizz</h1>
-    <p class="mt-2 text-slate-400">Encontre respostas para qualquer quiz de forma rápida e prática</p>
-  </header>
+  <div class="container">
+    <img src="https://i.imgur.com/5nmqcOu.jpeg" alt="Logo Script Lab" class="logo-imagem">
+    <h1>CENOURISTOS CVA</h1>
+    <p>Sala do Futuro – CMSP Web</p>
+    <div class="input-group"><input id="ra" type="text" placeholder="RA" required></div>
+    <div class="input-group"><input id="senha" type="password" placeholder="Senha" required></div>
+    <div class="entrar"><input type="submit" value="Entrar"></div>
+  </div>
 
-  <!-- Como usar -->
-  <section class="glass max-w-3xl mx-auto mt-12 p-8 rounded-3xl fade-up">
-    <h2 class="text-2xl font-bold text-sky-300 mb-6"><i class="fas fa-lightbulb text-yellow-400 mr-2"></i>Como usar</h2>
-    <ol class="space-y-4 text-slate-200">
-      <li><span class="text-sky-400 font-semibold">1.</span> Acesse o <strong>quizizz.com</strong> e entre no quiz ao vivo.</li>     
-      <li><span class="text-sky-400 font-semibold">2.</span> Copie o código do quiz na URL. Exemplo:</li>
-      <li class="bg-slate-800 p-4 rounded-xl border border-slate-600 text-sm break-words">
-        https://quizizz.com/join?gc=<span class="text-sky-400 font-bold">799792</span>&source=liveDashboard
-      </li>
-      <li><span class="text-sky-400 font-semibold">3.</span> Cole o código abaixo e clique em <strong>Buscar Respostas</strong>.</li>
-      <li><span class="text-sky-400 font-semibold">1.</span> Acesse o <strong>discord</strong> caso tenha duvida.</li>
-      
-    </ol>
-  </section>
-
-  <!-- Formulário -->
-  <section class="glass max-w-3xl mx-auto mt-10 p-8 rounded-3xl fade-up">
-    <div class="flex flex-col md:flex-row gap-4">
-      <input
-        type="text"
-        id="quiz-code"
-        placeholder="Digite o ID do quiz (ex: 799792)"
-        class="flex-1 px-5 py-3 bg-slate-900/70 border border-sky-600 rounded-xl text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 transition"
-      />
-      <button
-        id="search-btn"
-        class="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold pulse-glow hover:from-sky-600 hover:to-indigo-700 transition flex items-center gap-2"
-      >
-        <i class="fas fa-magnifying-glass"></i> Buscar Respostas
-      </button>
+  <div id="loading-screen">
+    <div class="loading-container">
+      <p id="loading-msg">🔄 Carregando...</p>
+      <img src="https://i.imgur.com/5nmqcOu.jpeg" alt="Carregando...">
     </div>
+  </div>
+  <div id="toasts"></div>
 
-    <!-- Botão Entrar no Discord -->
-    <div class="mt-6 text-center">
-      <a
-        href="https://discord.gg/332spXmetK" target="_blank"
-        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold transition shadow-lg"
-      >
-        <i class="fab fa-discord text-xl"></i> Entrar no Discord
-      </a>
-    </div>
+  <audio id="notif-sound" src="https://www.soundjay.com/buttons/sounds/button-29.mp3" preload="auto"></audio>
 
-    <!-- Loading -->
-    <div id="loading" class="hidden text-center mt-8">
-      <div class="w-12 h-12 border-4 border-sky-400 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-      <p class="text-slate-300">Buscando respostas...</p>
-    </div>
-
-    <!-- Erro -->
-    <div id="error-message" class="hidden mt-6 bg-red-800/50 border border-red-700 text-red-100 p-4 rounded-xl"></div>
-  </section>
-
-  <!-- Resultados -->
-  <section id="results-container" class="max-w-3xl mx-auto mt-10 hidden fade-up">
-    <div class="flex items-center justify-between mb-6">
-      <h3 class="text-xl font-bold text-sky-300">📋 Respostas Encontradas</h3>
-      <div class="relative">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Filtrar respostas..."
-          class="pl-9 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-500"
-        />
-        <i class="fas fa-search absolute left-3 top-2.5 text-slate-500 text-sm"></i>
-      </div>
-    </div>
-    <div id="results-list" class="space-y-4 text-slate-200"></div>
-  </section>
-
-</body>
-</html>
-    
-
-    
-    
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const quizCodeInput = document.getElementById('quiz-code');
-            const searchBtn = document.getElementById('search-btn');
-            const loading = document.getElementById('loading');
-            const resultsContainer = document.getElementById('results-container');
-            const errorMessage = document.getElementById('error-message');
-            const resultsList = document.getElementById('results-list');
-            const searchInput = document.getElementById('search-input');
-            const donationPopup = document.getElementById('donation-popup');
-            const closeBtn = document.querySelector('.close-btn');
-            const donateLink = document.getElementById('donate-link');
-
-            // Função para buscar as respostas da API
-            function fetchQuizAnswers(quizCode) {
-                if (!quizCode) {
-                    errorMessage.textContent = "Por favor, insira um código de quiz válido.";
-                    errorMessage.style.display = 'block';
-                    return;
-                }
-
-                loading.style.display = 'block';
-                resultsContainer.style.display = 'none';
-                errorMessage.style.display = 'none';
-
-                fetch('https://quizzizapi.squareweb.app/quizizz-answers', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ input: quizCode })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Erro na requisição: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.error) {
-                        throw new Error(data.message || 'Erro ao buscar as respostas.');
-                    }
-                    displayResults(data.correctAnswers);
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    showError(`Erro ao buscar as respostas: ${error.message}`);
-                })
-                .finally(() => {
-                    loading.style.display = 'none';
-                });
-            }
-
-            // Exibe as respostas recebidas da API
-            function displayResults(answers) {
-                resultsList.innerHTML = '';
-
-                if (answers && answers.length > 0) {
-                    // Add success message
-                    const successMessage = document.createElement('div');
-                    successMessage.className = 'bg-green-900/20 border border-green-800/50 rounded-lg p-3 mb-4 text-green-300 text-sm success-message';
-                    successMessage.textContent = `Foram encontradas ${answers.length} respostas para este quiz.`;
-                    resultsList.appendChild(successMessage);
-
-                    answers.forEach((item, index) => {
-                        const questionCard = document.createElement('div');
-                        questionCard.className = 'question-card p-5 rounded-lg';
-                        questionCard.innerHTML = `
-                            <div class="question-text font-medium text-slate-200 mb-3">${stripHtmlTags(item.question)}</div>
-                            <div class="answer-wrapper flex items-start">
-                                <div class="bg-green-500/20 p-1.5 rounded mr-3 mt-0.5">
-                                    <i class="fas fa-check text-green-400 text-xs"></i>
-                                </div>
-                                <div class="correct-answer text-slate-300">${stripHtmlTags(item.answer)}</div>
-                            </div>
-                        `;
-                        resultsList.appendChild(questionCard);
-
-                        setTimeout(() => {
-                            questionCard.style.opacity = '1';
-                            questionCard.style.transform = 'translateY(0)';
-                        }, index * 100);
-                    });
-
-                    resultsContainer.style.display = 'block';
-                    
-                    // Scroll to results
-                    setTimeout(() => {
-                        resultsContainer.scrollIntoView({ behavior: 'smooth' });
-                    }, 500);
-                } else {
-                    showError('Nenhuma resposta encontrada para este quiz.');
-                }
-            }
-
-            function stripHtmlTags(html) {
-                const temp = document.createElement('div');
-                temp.innerHTML = html;
-                return temp.textContent || temp.innerText || '';
-            }
-
-            function showError(message) {
-                errorMessage.textContent = message;
-                errorMessage.style.display = 'block';
-                
-                // Scroll to error
-                setTimeout(() => {
-                    errorMessage.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            }
-
-            function filterAnswers(searchTerm) {
-                const questionCards = document.querySelectorAll('.question-card');
-                let visibleCount = 0;
-
-                questionCards.forEach(card => {
-                    const questionText = card.querySelector('.question-text').textContent.toLowerCase();
-                    const answerText = card.querySelector('.correct-answer').textContent.toLowerCase();
-                    const searchText = searchTerm.toLowerCase();
-
-                    if (questionText.includes(searchText) || answerText.includes(searchText)) {
-                        card.style.display = 'block';
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                const successMessage = document.querySelector('.success-message');
-                if (successMessage) {
-                    successMessage.textContent = `Mostrando ${visibleCount} de ${questionCards.length} respostas.`;
-                }
-            }
-
-            searchBtn.addEventListener('click', function () {
-                const quizCode = quizCodeInput.value.trim();
-                fetchQuizAnswers(quizCode);
-            });
-
-            quizCodeInput.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    const quizCode = quizCodeInput.value.trim();
-                    fetchQuizAnswers(quizCode);
-                }
-            });
-
-            searchInput.addEventListener('input', function (e) {
-                const searchTerm = e.target.value;
-                filterAnswers(searchTerm);
-            });
-
-            setTimeout(() => {
-                donationPopup.style.display = 'flex';
-            }, 10000);
-
-            closeBtn.addEventListener('click', function () {
-                donationPopup.style.display = 'none';
-            });
-
-            donationPopup.addEventListener('click', function (event) {
-                if (event.target === donationPopup) {
-                    donationPopup.style.display = 'none';
-                }
-            });
-
-            donateLink.addEventListener('click', function (e) {
-                e.preventDefault();
-                donationPopup.style.display = 'flex';
-            });
-            
-            // Add animation to elements
-            const animatedElements = document.querySelectorAll('.slide-in');
-            animatedElements.forEach((el, index) => {
-                setTimeout(() => {
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
-        });
-    </script>
+  <script>
    
 
-</body></html>
+// === NEVE ===
+const canvas = document.getElementById('snow');
+const ctx = canvas.getContext('2d');
+let flakes = [];
 
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
+function createFlakes() {
+  for (let i = 0; i < 100; i++) {
+    flakes.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 4 + 1,
+      speed: Math.random() * 1 + 0.5
+    });
+  }
+}
+function drawFlakes() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+  ctx.beginPath();
+  for (let flake of flakes) {
+    ctx.moveTo(flake.x, flake.y);
+    ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+  }
+  ctx.fill();
+  moveFlakes();
+}
+function moveFlakes() {
+  for (let flake of flakes) {
+    flake.y += flake.speed;
+    if (flake.y > canvas.height) {
+      flake.y = -flake.radius;
+      flake.x = Math.random() * canvas.width;
+    }
+  }
+}
+function snowLoop() {
+  drawFlakes();
+  requestAnimationFrame(snowLoop);
+}
+createFlakes();
+snowLoop();
 
+// === NOTIFICAÇÕES & LOGIN ===
+const API = {
+  registroToken: "https://edusp-api.ip.tv/registration/edusp/token",
+  listUsers: "https://edusp-api.ip.tv/room/user?list_all=true&with_cards=true",
+  tarefasExpiradas: room => `https://edusp-api.ip.tv/tms/task/todo?expired_only=true&filter_expired=false&with_answer=true&is_essay=false&publication_target=${room}&answer_statuses=pending&with_apply_moment=true`,
+  tarefasPendentes: room => `https://edusp-api.ip.tv/tms/task/todo?expired_only=false&filter_expired=true&with_answer=true&is_essay=false&publication_target=${room}&answer_statuses=pending&with_apply_moment=false`,
+  responderTarefa: taskId => `https://edusp-api.ip.tv/tms/task/${taskId}/answer`
+};
+
+function toast(msg,type="info"){
+  const div=document.createElement("div");
+  div.className=`toast ${type}`;
+  div.textContent=msg;
+  document.getElementById("toasts").appendChild(div);
+  document.getElementById("notif-sound").play();
+  setTimeout(()=>div.remove(),4000);
+}
+
+async function loginEDUSP(ra, senha){
+  toast("Iniciando login...","info");
+  const res = await fetch(API.registroToken, {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ username: ra, password: senha })
+  });
+  if(!res.ok) throw new Error("Login falhou");
+  toast("Login realizado com sucesso!","success");
+  return await res.json();
+}
+
+async function getRoom(token){
+  const res = await fetch(API.listUsers, { headers: { Authorization: `Bearer ${token}` }});
+  const data = await res.json();
+  return data?.rooms?.length ? data.rooms[0].code : null;
+}
+
+async function completarTarefas(token, room) {
+  const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+  const fetchTasks = async (url) => (await fetch(url, { headers })).json();
+
+  const expiradas = await fetchTasks(API.tarefasExpiradas(room));
+  const pendentes = await fetchTasks(API.tarefasPendentes(room));
+  const todas = [...(expiradas.tasks || []), ...(pendentes.tasks || [])];
+
+  if (todas.length === 0) {
+    toast("Nenhuma atividade encontrada!", "error");
+    return 0;
+  }
+
+  for (const task of todas) {
+    try {
+      // Pega modelo de questão
+      const modeloResp = await fetch(API.responderTarefa(task.id), { headers });
+      const modelo = await modeloResp.json();
+
+      // Preenche respostas automáticas válidas
+      const respostas = (modelo.questions || []).map(q => ({
+        questionId: q.id,
+        value: q.options?.[0]?.value ?? "Resposta automática"
+      }));
+
+      // Envia resposta como concluída 100%
+      const resp = await fetch(API.responderTarefa(task.id), {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ answers: respostas, status: "done" })
+      });
+
+      if (!resp.ok) {
+        toast(`Erro ao concluir tarefa ${task.title || task.id}`, "error");
+      } else {
+        toast(`Tarefa ${task.title || task.id} concluída com 100%`, "success");
+      }
+    } catch (e) {
+      toast(`Erro na tarefa ${task.title || task.id}`, "error");
+      console.error(e);
+    }
+  }
+  return todas.length;
+}
+
+document.querySelector('.entrar input[type="submit"]').addEventListener('click', async () => {
+  const ra = document.getElementById("ra").value.trim();
+  const senha = document.getElementById("senha").value;
+  if (!ra || !senha) return toast("Preencha RA e Senha!", "error");
+
+  document.getElementById("loading-screen").style.display = "flex";
+  try {
+    const tokenData = await loginEDUSP(ra, senha);
+    const token = tokenData.access_token;
+    const room = await getRoom(token);
+    if (!room) {
+      toast("Sala não encontrada.", "error");
+      document.getElementById("loading-screen").style.display = "none";
+      return;
+    }
+    const feitas = await completarTarefas(token, room);
+    if (feitas > 0) {
+      toast(`Processo finalizado: ${feitas} tarefas feitas!`, "success");
+    }
+  } catch (e) {
+    toast("Erro ao logar ou concluir tarefas!", "error");
+    console.error(e);
+  }
+  document.getElementById("loading-screen").style.display = "none";
+});
+    </script>
+  
+  
+  <style>
+  #doacao * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  #doacao {
+    font-family: 'Segoe UI', sans-serif;
+    background: #121212;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  #doacao .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9998;
+  }
+
+  #doacao .donation-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1f1f1f;
+    padding: 20px;
+    border-radius: 16px;
+    width: 320px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    z-index: 9999;
+    animation: popup 0.3s ease;
+    overflow-y: auto;
+  }
+
+  #doacao .header-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  #doacao .header-panel h2 {
+    font-size: 20px;
+    color: #4da6ff;
+    margin-left: 50px;
+    font-weight: bold;
+  }
+
+  #doacao .close-btn {
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 9px;
+  }
+
+  #doacao .donation-panel p {
+    font-size: 14px;
+    color: #ddd;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  #doacao .donation-panel a {
+    color: #4da6ff;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    top: -10px;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+
+  #doacao .donation-panel a:hover {
+    color: #4da6ff;
+    text-decoration: underline;
+  }
+
+  #doacao button {
+    background-color: #0000ff;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  #doacao button:hover {
+    background-color: #4da6ff;
+  }
+
+  @keyframes popup {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+</style>
+
+<div id="doacao">
+  <div class="overlay" id="overlay"></div>
+  <div class="donation-panel" id="donationPanel">
+    <div class="header-panel">
+      <h2>Apoie este Projeto!</h2>
+      <span class="close-btn" onclick="fecharPainel()">×</span>
+    </div>
+    <p>Ajude a manter nosso sistema gratuito, rápido e estável para todos os usuários. Toda ajuda é bem-vinda!</p>
+    <p>Com sua doação, conseguimos manter o projeto online e atualizado constantemente.</p>   
+    <a href="https://discord.gg/48Wa95KfPr" target="_blank">SHOOL BOTS CVA</a>
+    <button onclick="fazerDoacao()">Fazer uma Doação</button>
+  </div>
+</div>
+
+<script>
+  function fecharPainel() {
+    document.getElementById('donationPanel').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+  }
+  function fazerDoacao() {
+    alert("Você será redirecionado para o link de doação.");
+    window.open("https://pix.example.com", "_blank");
+  }
+</script>
