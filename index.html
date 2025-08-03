@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cenouristos Quizizz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(ellipse at top left, #0f172a, #050910);
+      color: #e0f2fe;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(100, 149, 237, 0.15);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.1);
+    }
+
+    .neon-text {
+      background: linear-gradient(to right, #38bdf8, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .pulse-glow {
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      animation: pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(56, 189, 248, 0.7);
+      }
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.7s forwards ease-in-out;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="px-4 py-12">
+
+  <!-- Cabeçalho -->
+  <header class="text-center fade-up">
+    <h1 class="text-5xl font-bold neon-text drop-shadow-lg">Cenouristos Quizizz</h1>
+    <p class="mt-2 text-slate-400">Encontre respostas para qualquer quiz de forma rápida e prática</p>
+  </header>
+
+  <!-- Como usar -->
+  <section class="glass max-w-3xl mx-auto mt-12 p-8 rounded-3xl fade-up">
+    <h2 class="text-2xl font-bold text-sky-300 mb-6"><i class="fas fa-lightbulb text-yellow-400 mr-2"></i>Como usar</h2>
+    <ol class="space-y-4 text-slate-200">
+      <li><span class="text-sky-400 font-semibold">1.</span> Acesse o <strong>quizizz.com</strong> e entre no quiz ao vivo.</li>     
+      <li><span class="text-sky-400 font-semibold">2.</span> Copie o código do quiz na URL. Exemplo:</li>
+      <li class="bg-slate-800 p-4 rounded-xl border border-slate-600 text-sm break-words">
+        https://quizizz.com/join?gc=<span class="text-sky-400 font-bold">799792</span>&source=liveDashboard
+      </li>
+      <li><span class="text-sky-400 font-semibold">3.</span> Cole o código abaixo e clique em <strong>Buscar Respostas</strong>.</li>
+      <li><span class="text-sky-400 font-semibold">1.</span> Acesse o <strong>discord</strong> caso tenha duvida.</li>
+      
+    </ol>
+  </section>
+
+  <!-- Formulário -->
+  <section class="glass max-w-3xl mx-auto mt-10 p-8 rounded-3xl fade-up">
+    <div class="flex flex-col md:flex-row gap-4">
+      <input
+        type="text"
+        id="quiz-code"
+        placeholder="Digite o ID do quiz (ex: 799792)"
+        class="flex-1 px-5 py-3 bg-slate-900/70 border border-sky-600 rounded-xl text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400 transition"
+      />
+      <button
+        id="search-btn"
+        class="px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold pulse-glow hover:from-sky-600 hover:to-indigo-700 transition flex items-center gap-2"
+      >
+        <i class="fas fa-magnifying-glass"></i> Buscar Respostas
+      </button>
+    </div>
+
+    <!-- Botão Entrar no Discord -->
+    <div class="mt-6 text-center">
+      <a
+        href="https://discord.gg/332spXmetK" target="_blank"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold transition shadow-lg"
+      >
+        <i class="fab fa-discord text-xl"></i> Entrar no Discord
+      </a>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="hidden text-center mt-8">
+      <div class="w-12 h-12 border-4 border-sky-400 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+      <p class="text-slate-300">Buscando respostas...</p>
+    </div>
+
+    <!-- Erro -->
+    <div id="error-message" class="hidden mt-6 bg-red-800/50 border border-red-700 text-red-100 p-4 rounded-xl"></div>
+  </section>
+
+  <!-- Resultados -->
+  <section id="results-container" class="max-w-3xl mx-auto mt-10 hidden fade-up">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-xl font-bold text-sky-300">📋 Respostas Encontradas</h3>
+      <div class="relative">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Filtrar respostas..."
+          class="pl-9 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-500"
+        />
+        <i class="fas fa-search absolute left-3 top-2.5 text-slate-500 text-sm"></i>
+      </div>
+    </div>
+    <div id="results-list" class="space-y-4 text-slate-200"></div>
+  </section>
+
+</body>
+</html>
+    
+
+    
+    
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const quizCodeInput = document.getElementById('quiz-code');
+            const searchBtn = document.getElementById('search-btn');
+            const loading = document.getElementById('loading');
+            const resultsContainer = document.getElementById('results-container');
+            const errorMessage = document.getElementById('error-message');
+            const resultsList = document.getElementById('results-list');
+            const searchInput = document.getElementById('search-input');
+            const donationPopup = document.getElementById('donation-popup');
+            const closeBtn = document.querySelector('.close-btn');
+            const donateLink = document.getElementById('donate-link');
+
+            // Função para buscar as respostas da API
+            function fetchQuizAnswers(quizCode) {
+                if (!quizCode) {
+                    errorMessage.textContent = "Por favor, insira um código de quiz válido.";
+                    errorMessage.style.display = 'block';
+                    return;
+                }
+
+                loading.style.display = 'block';
+                resultsContainer.style.display = 'none';
+                errorMessage.style.display = 'none';
+
+                fetch('https://quizzizapi.squareweb.app/quizizz-answers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ input: quizCode })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro na requisição: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.message || 'Erro ao buscar as respostas.');
+                    }
+                    displayResults(data.correctAnswers);
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    showError(`Erro ao buscar as respostas: ${error.message}`);
+                })
+                .finally(() => {
+                    loading.style.display = 'none';
+                });
+            }
+
+            // Exibe as respostas recebidas da API
+            function displayResults(answers) {
+                resultsList.innerHTML = '';
+
+                if (answers && answers.length > 0) {
+                    // Add success message
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'bg-green-900/20 border border-green-800/50 rounded-lg p-3 mb-4 text-green-300 text-sm success-message';
+                    successMessage.textContent = `Foram encontradas ${answers.length} respostas para este quiz.`;
+                    resultsList.appendChild(successMessage);
+
+                    answers.forEach((item, index) => {
+                        const questionCard = document.createElement('div');
+                        questionCard.className = 'question-card p-5 rounded-lg';
+                        questionCard.innerHTML = `
+                            <div class="question-text font-medium text-slate-200 mb-3">${stripHtmlTags(item.question)}</div>
+                            <div class="answer-wrapper flex items-start">
+                                <div class="bg-green-500/20 p-1.5 rounded mr-3 mt-0.5">
+                                    <i class="fas fa-check text-green-400 text-xs"></i>
+                                </div>
+                                <div class="correct-answer text-slate-300">${stripHtmlTags(item.answer)}</div>
+                            </div>
+                        `;
+                        resultsList.appendChild(questionCard);
+
+                        setTimeout(() => {
+                            questionCard.style.opacity = '1';
+                            questionCard.style.transform = 'translateY(0)';
+                        }, index * 100);
+                    });
+
+                    resultsContainer.style.display = 'block';
+                    
+                    // Scroll to results
+                    setTimeout(() => {
+                        resultsContainer.scrollIntoView({ behavior: 'smooth' });
+                    }, 500);
+                } else {
+                    showError('Nenhuma resposta encontrada para este quiz.');
+                }
+            }
+
+            function stripHtmlTags(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                return temp.textContent || temp.innerText || '';
+            }
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                
+                // Scroll to error
+                setTimeout(() => {
+                    errorMessage.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+
+            function filterAnswers(searchTerm) {
+                const questionCards = document.querySelectorAll('.question-card');
+                let visibleCount = 0;
+
+                questionCards.forEach(card => {
+                    const questionText = card.querySelector('.question-text').textContent.toLowerCase();
+                    const answerText = card.querySelector('.correct-answer').textContent.toLowerCase();
+                    const searchText = searchTerm.toLowerCase();
+
+                    if (questionText.includes(searchText) || answerText.includes(searchText)) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                const successMessage = document.querySelector('.success-message');
+                if (successMessage) {
+                    successMessage.textContent = `Mostrando ${visibleCount} de ${questionCards.length} respostas.`;
+                }
+            }
+
+            searchBtn.addEventListener('click', function () {
+                const quizCode = quizCodeInput.value.trim();
+                fetchQuizAnswers(quizCode);
+            });
+
+            quizCodeInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    const quizCode = quizCodeInput.value.trim();
+                    fetchQuizAnswers(quizCode);
+                }
+            });
+
+            searchInput.addEventListener('input', function (e) {
+                const searchTerm = e.target.value;
+                filterAnswers(searchTerm);
+            });
+
+            setTimeout(() => {
+                donationPopup.style.display = 'flex';
+            }, 10000);
+
+            closeBtn.addEventListener('click', function () {
+                donationPopup.style.display = 'none';
+            });
+
+            donationPopup.addEventListener('click', function (event) {
+                if (event.target === donationPopup) {
+                    donationPopup.style.display = 'none';
+                }
+            });
+
+            donateLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                donationPopup.style.display = 'flex';
+            });
+            
+            // Add animation to elements
+            const animatedElements = document.querySelectorAll('.slide-in');
+            animatedElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+   
+
+</body></html>
+
+
+
