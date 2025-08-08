@@ -1,359 +1,245 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cenouritos Tarefas - Sala do Futuro</title>
-    <meta name="description" content="Automatize suas tarefas acadêmicas de forma rápida e eficiente">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#121212',
-                        secondary: '#1e1e1e',
-                        accent: '#6a5acd',
-                        accent2: '#7e6bff',
-                        darkpurple: '#3d3a62',
-                        text: '#e0e0e0',
-                        text2: '#a0a0a0'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Roboto Mono', 'monospace']
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 8s linear infinite',
-                        'gradient-x': 'gradient-x 15s ease infinite'
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-20px)' }
-                        },
-                        'gradient-x': {
-                            '0%, 100%': {
-                                'background-position': '0% 50%'
-                            },
-                            '50%': {
-                                'background-position': '100% 50%'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/css">
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
-        
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #6a5acd;
-            border-radius: 5px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #7e6bff;
-        }
-        
-        .glow-text {
-            text-shadow: 0 0 10px rgba(106, 90, 205, 0.7);
-        }
-        
-        .neon-border {
-            position: relative;
-        }
-        .neon-border::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 2px;
-            background: linear-gradient(135deg, #6a5acd, #3d3a62, #6a5acd);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            animation: gradient-x 8s ease infinite;
-        }
-        
-        .parallax-layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            will-change: transform;
-        }
-        
-        .particle {
-            position: absolute;
-            background: linear-gradient(135deg, #6a5acd, #7e6bff);
-            border-radius: 50%;
-            filter: blur(1px);
-            opacity: 0.3;
-        }
-        
-        @keyframes floating {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        
-        .floating {
-            animation: floating 8s ease-in-out infinite;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sistema Desativado — Em Desenvolvimento</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#7c3aed;
+      --accent-2:#06b6d4;
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.04);
+      --radius:14px;
+      --maxw:900px;
+      --mono: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--mono);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.08), transparent 10%),
+        radial-gradient(1000px 500px at 90% 90%, rgba(6,182,212,0.05), transparent 10%),
+        var(--bg);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+
+    .card{
+      width:100%;
+      max-width:var(--maxw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      box-shadow: 0 8px 32px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
+      padding:36px;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .left {
+      flex:0 0 120px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .icon-wrap{
+      width:110px;
+      height:110px;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 10px 30px rgba(12,12,30,0.6);
+      transform:rotate(-8deg);
+    }
+
+    .icon-wrap svg{width:56px;height:56px;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.45))}
+
+    .content{
+      flex:1;
+    }
+
+    h1{
+      margin:0 0 6px 0;
+      font-size:20px;
+      letter-spacing:0.2px;
+    }
+
+    p.lead{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:15px;
+    }
+
+    .status{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:999px;
+      color: #dbeafe;
+      font-weight:600;
+      font-size:13px;
+      margin-bottom:18px;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .btns{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      -webkit-tap-highlight-color: transparent;
+      border:0;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      font-size:14px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      color:inherit;
+      transition:transform .12s ease, box-shadow .12s ease;
+      box-shadow: 0 4px 12px rgba(2,6,23,0.5);
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color:white;
+      box-shadow: 0 8px 28px rgba(6,182,212,0.12), 0 2px 8px rgba(0,0,0,0.6);
+    }
+    .btn.ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+    }
+
+    .meta{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .right {
+      flex:0 0 220px;
+      text-align:center;
+    }
+
+    .progress {
+      width:160px;
+      height:160px;
+      border-radius:50%;
+      background: conic-gradient(var(--accent) 0% 35%, rgba(255,255,255,0.03) 35% 100%);
+      display:grid;
+      place-items:center;
+      margin:0 auto 12px;
+      box-shadow: 0 10px 30px rgba(7,10,20,0.6);
+    }
+
+    .progress .num{
+      font-size:28px;
+      font-weight:700;
+      color:white;
+    }
+    .small{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* Responsividade */
+    @media (max-width:720px){
+      .card{flex-direction:column; padding:22px; gap:18px}
+      .left, .right{flex:0 0 auto}
+      .right{order:3}
+    }
+
+    /* Animação sutil */
+    @keyframes float {
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+    .icon-wrap{animation:float 4s ease-in-out infinite}
+  </style>
 </head>
-<body class="bg-primary text-text font-sans min-h-screen overflow-x-hidden relative">
-    <!-- Background elements -->
-    <div class="fixed inset-0 overflow-hidden -z-10">
-        <div class="absolute inset-0 bg-gradient-to-br from-darkpurple/30 to-primary/70"></div>
-        <div id="particles-container" class="absolute inset-0"></div>
-        
-        <div class="parallax-layer" style="transform: translateZ(-20px) scale(1.2);">
-            <div class="absolute top-10 left-10 w-16 h-16 bg-accent rounded-full opacity-10 animate-pulse-slow"></div>
-            <div class="absolute bottom-20 right-20 w-24 h-24 bg-accent2 rounded-full opacity-10 animate-pulse-slow delay-1000"></div>
-            <div class="absolute top-1/4 right-1/4 w-12 h-12 bg-accent rounded-full opacity-10 animate-pulse-slow delay-2000"></div>
-            <div class="absolute bottom-1/3 left-1/3 w-20 h-20 bg-accent2 rounded-full opacity-10 animate-pulse-slow delay-3000"></div>
-        </div>
-        
-        <div class="parallax-layer" style="transform: translateZ(-10px) scale(1.1);">
-            <div class="absolute top-32 right-1/3 w-8 h-8 bg-accent2 rounded-full opacity-20 animate-spin-slow"></div>
-            <div class="absolute bottom-32 left-1/3 w-12 h-12 bg-accent rounded-full opacity-20 animate-spin-slow"></div>
-        </div>
+<body>
+  <main class="card" role="main" aria-labelledby="title">
+    <div class="left" aria-hidden="true">
+      <div class="icon-wrap" title="Desativado">
+        <!-- Ícone estilizado (SVG) -->
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2C6.477 2 2 6.477 2 12c0 5.522 4.477 10 10 10 5.523 0 10-4.478 10-10 0-5.523-4.477-10-10-10zm3.535 13.535L13.414 13.414 15 11.828 17.121 14 15.536 15.586z" fill="white" opacity="0.95"/>
+          <path d="M8.464 6.464L10.586 8.586 9 10.172 6.879 8.05 8.464 6.464z" fill="white" opacity="0.95"/>
+        </svg>
+      </div>
     </div>
 
-    <!-- Main content -->
-    <div class="relative min-h-screen flex flex-col items-center justify-center p-4 sm:p-8">
-        <!-- Logo and Header -->
-        <div class="mb-8 text-center group">
-            <div class="relative w-32 h-32 mx-auto mb-6">
-                <div class="absolute inset-0 bg-gradient-to-br from-accent to-accent2 rounded-2xl shadow-lg group-hover:rotate-6 transition-transform duration-500"></div>
-                <div class="absolute inset-1 bg-secondary rounded-xl overflow-hidden flex items-center justify-center">
-                    <img src="https://i.imgur.com/5nmqcOu.jpeg" alt="CVA Logo" class="w-28 h-28 object-contain">
-                </div>
-            </div>
-            
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 glow-text">
-                <span class="relative">
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent2">𝙲𝚎𝚗𝚘𝚞𝚛𝚒𝚝𝚘𝚜 𝚃𝚊𝚛𝚎𝚏𝚊𝚜</span>
-                    <span class="absolute -right-4 -top-2 text-accent/40 text-sm">PRO</span>
-                </span>
-            </h1>
-            
-            <h2 class="text-xl sm:text-2xl text-text2 font-medium mb-6 relative inline-block">
-                <span class="relative z-10">Sala do Futuro – CMSP Web</span>
-                <span class="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-accent to-accent2/0 rounded-full"></span>
-            </h2>
-            
-            <div class="flex justify-center space-x-2">
-                <span class="px-3 py-1 bg-accent/20 text-accent text-xs rounded-full flex items-center">
-                    <i class="fas fa-shield-alt mr-1"></i> Seguro
-                </span>
-                <span class="px-3 py-1 bg-accent/20 text-accent text-xs rounded-full flex items-center">
-                    <i class="fas fa-bolt mr-1"></i> Rápido
-                </span>
-                <span class="px-3 py-1 bg-accent/20 text-accent text-xs rounded-full flex items-center">
-                    <i class="fas fa-infinity mr-1"></i> Eficiente
-                </span>
-            </div>
-        </div>
+    <section class="content" aria-labelledby="title">
+      <div class="status" aria-hidden="false">🔒 <span>Desativado</span></div>
+      <h1 id="title">Funcionalidade temporariamente desativada</h1>
+      <p class="lead">O novo script está em desenvolvimento e, por isso, esta funcionalidade foi temporariamente desativada. Estamos trabalhando para trazer melhorias, correções e uma experiência melhor para você. Obrigado pela paciência!</p>
 
-        <!-- Main Form -->
-        <div class="w-full max-w-md relative">
-            <div class="absolute -inset-1 bg-gradient-to-r from-accent to-accent2 rounded-xl opacity-75 blur-lg animate-pulse-slow"></div>
-            <div class="relative bg-secondary/80 backdrop-blur-sm rounded-xl p-6 sm:p-8 shadow-2xl neon-border">
-                <form id="Enviar" class="space-y-6">
-                    <div class="space-y-4">
-                        <div>
-                            <label for="ra" class="block text-sm font-medium mb-2 text-text">RA:</label>
-                            <div class="relative">
-                                <input type="text" id="ra" required 
-                                    class="w-full px-4 py-3 bg-secondary text-text rounded-lg border border-gray-700 focus:border-accent focus:ring-2 focus:ring-accent/50 transition-all duration-200"
-                                    placeholder="Digite seu RA: Exemplo: 0001103350309Sp">
-                                <div class="absolute right-3 top-3 text-text2">
-                                    <i class="fas fa-id-card"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label for="senha" class="block text-sm font-medium mb-2 text-text">Senha:</label>
-                            <div class="relative">
-                                <input type="password" id="senha" required 
-                                    class="w-full px-4 py-3 bg-secondary text-text rounded-lg border border-gray-700 focus:border-accent focus:ring-2 focus:ring-accent/50 transition-all duration-200"
-                                    placeholder="Digite sua senha: Exemplo: Az@2029">
-                                <div class="absolute right-3 top-3 flex items-center space-x-2">
-                                    <button type="button" onclick="togglePasswordVisibility()" class="text-text2 hover:text-accent transition-colors">
-                                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label for="tempo" class="block text-sm font-medium mb-2 text-text">Tempo por Tarefa:</label>
-                            <select id="tempo" required 
-                                class="w-full px-4 py-3 bg-secondary text-text rounded-lg border border-gray-700 focus:border-accent focus:ring-2 focus:ring-accent/50 transition-all duration-200 appearance-none">
-                                <option value="0">Instantâneo</option>
-                                <option value="30">30 Segundos</option>
-                                <option value="60">01 Minuto</option>
-                                <option value="120" selected>02 Minutos</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" id="submitBtn" class="w-full py-3 px-6 bg-gradient-to-r from-accent to-accent2 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center space-x-2">
-                        <i class="fas fa-rocket"></i>
-                        <span>Fazer Tarefas</span>
-                    </button>
-                </form>
-            </div>
-        </div>
+      <div class="btns" role="group" aria-label="Ações">
+        <button class="btn primary" onclick="location.reload()">Tentar novamente</button>
+        <button class="btn ghost" onclick="document.getElementById('more').classList.toggle('hidden')">Mais informações</button>
+        <a class="btn" href="#" onclick="alert('Contato: suporte@seudominio.com')">Contato</a>
+      </div>
 
-        <div class="mt-8 flex items-center justify-center space-x-4">
-            <div class="relative group cursor-pointer">
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-accent to-accent2 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-200"></div>
-                <button onclick="showInfoPanel()" class="relative px-4 py-2 bg-secondary rounded-lg text-sm font-medium text-text flex items-center space-x-2">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Sobre o CVA</span>
-                </button>
-            </div>
-            
-            <div class="relative group cursor-pointer">
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-200"></div>
-                <button onclick="showDonationPanel()" class="relative px-4 py-2 bg-secondary rounded-lg text-sm font-medium text-text flex items-center space-x-2">
-                    <i class="fas fa-heart"></i>
-                    <span>Apoiar</span>
-                </button>
-            </div>
-        </div>
+      <div id="more" class="meta" style="display:none">
+        <strong>O que está acontecendo?</strong>
+        <div style="margin-top:8px">Atualmente estamos realizando atualizações no backend e testando o novo script internamente. Quando a nova versão estiver pronta e testada, reativaremos esta função.</div>
+        <div style="margin-top:8px"><em>Dica:</em> você pode voltar à página principal ou entrar em contato com o suporte para mais detalhes.</div>
+      </div>
+    </section>
 
-        <div class="mt-12 pt-6 border-t border-gray-800 w-full max-w-xs">
-            <p class="text-center text-xs text-text2">
-                © 2025 Cenouritos Tarefas. Todos os direitos reservados.<br>
-                Desenvolvido com <i class="fas fa-heart text-pink-500"></i> pela comunidade.
-            </p>
-        </div>
-    </div>
+    <aside class="right" aria-label="Progresso de desenvolvimento">
+      <div class="progress" role="img" aria-label="Progresso aproximado">
+        <div class="num" id="progressText">35%</div>
+      </div>
+      <div class="small">Progresso aproximado</div>
+    </aside>
+  </main>
 
-    <!-- Progress Modal -->
-    <div id="progressModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-        <div class="relative w-full max-w-md bg-secondary/90 backdrop-blur-md rounded-xl shadow-2xl overflow-hidden neon-border">
-            <div class="p-6 sm:p-8 max-h-[70vh] overflow-y-auto">
-                <div class="flex justify-center mb-6">
-                    <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_jbrw3zcy.json" background="transparent" speed="1" style="width: 120px; height: 120px;" loop autoplay></lottie-player>
-                </div>
-                
-                <h2 class="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-accent to-accent2 text-transparent bg-clip-text">
-                    Processando Atividades
-                </h2>
-                
-                <div class="space-y-4 mb-6">
-                    <div>
-                        <p class="text-sm font-medium text-text2 mb-1">Tarefa atual:</p>
-                        <p class="text-text font-semibold truncate" id="currentTask">Nenhuma</p>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm font-medium text-text2 mb-1">Progresso:</p>
-                            <p class="text-text font-semibold">
-                                <span id="taskProgress">0</span> de <span id="totalTasks">0</span>
-                            </p>
-                        </div>
-                        
-                        <div>
-                            <p class="text-sm font-medium text-text2 mb-1">Tempo restante:</p>
-                            <p class="text-accent font-mono font-semibold" id="timeRemaining">0:00</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mb-4">
-                    <div class="h-2 w-full bg-gray-800 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-accent to-accent2 transition-all duration-300" id="progressBar" style="width: 0%"></div>
-                    </div>
-                </div>
-                
-                <button id="closeModal" class="w-full py-2 px-4 bg-red-500/20 text-red-400 font-medium rounded-lg hover:bg-red-500/30 transition-all duration-200 flex items-center justify-center space-x-2">
-                    <i class="fas fa-times"></i>
-                    <span>Cancelar Processo</span>
-                </button>
-            </div>
-        </div>
-    </div>
+  <script>
+    // Pequeno script para alternar a seção "Mais informações" e animar porcentagem.
+    const more = document.getElementById('more');
+    document.querySelector('.btn.ghost').addEventListener('click', () => {
+      if (more.style.display === 'none' || more.style.display === '') more.style.display = 'block';
+      else more.style.display = 'none';
+    });
 
-    <!-- Info Panel -->
-    <div id="infoPanel" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
-        <div class="relative w-full max-w-2xl bg-secondary/90 backdrop-blur-md rounded-xl shadow-2xl overflow-hidden neon-border">
-            <div class="absolute top-4 right-4">
-                <button onclick="hideInfoPanel()" class="p-2 text-text2 hover:text-text rounded-full transition-colors duration-200">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            
-            <div class="p-6 sm:p-8 max-h-[80vh] overflow-y-auto">
-                <h2 class="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-accent to-accent2 text-transparent bg-clip-text">
-                    Sobre o Sistema CVA
-                </h2>
-                
-                <div class="space-y-4 text-text2">
-                    <p>
-                        O <span class="text-accent font-medium">Centro Virtual de Aprendizado</span> é uma plataforma educacional desenvolvida pelo CMSP que oferece diversos recursos para auxiliar no processo de ensino e aprendizagem.
-                    </p>
-                    
-                    <p>
-                        O <span class="text-accent font-medium">Cenouritos Tarefas</span> é uma ferramenta não-oficial que automatiza processos tediosos, permitindo que você se concentre no que realmente importa: seu aprendizado.
-                    </p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                        <div class="p-4 bg-secondary rounded-lg border border-gray-800">
-                            <div class="flex items-center mb-3">
-                                <div class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent mr-3">
-                                    <i class="fas fa-clock"></i>
-                                </div>
-                                <h3 class="font-semibold text-text">Economize Tempo</h3>
-                            </div>
-                            <p class="text-xs text-text2">
-                                Automatize tarefas repetitivas e tenha mais tempo para estudar os conteúdos que realmente importam.
-                            </p>
-                        </div>
-                        
-                        <div class="p-4 bg-secondary rounded-lg border border-gray-800">
-                            <div class="flex items-center mb-3">
-                                <div class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent mr-3">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                                <h3 class="font-semibold text-text">Segurança</h3>
-                            </div>
-                            <p class="text-xs text-text2">
-                                Tudo acontece diretamente em seu navegador, sem armazenamento de dados sensíveis.
-                            </p>
-                        </div>
-                        
-                        <div class="p-4 bg-secondary rounded-lg border border-gray-800">
-                            <div class="flex items-center mb-3">
-                                <div class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent mr-3">
-                                    <i class="fas fa-chart-line"></i>
-                                </div>
-                                <h3 class="font-semibold text-text">Eficiência</h3>
-                            </div>
-                            <p class="text-xs text-text2">
-                                Processos otimizados para realizar suas tarefas da forma mais rápida possível.
-                            </p>
-                        </div>
-      
+    // Animação simples para a porcentagem (apenas visual)
+    (function animateProgress() {
+      const el = document.getElementById('progressText');
+      let v = 35; // valor inicial (edite se quiser)
+      let dir = 1;
+      setInterval(() => {
+        v += dir * 1;
+        if (v >= 60) dir = -1;
+        if (v <= 28) dir = 1;
+        el.textContent = v + '%';
+      }, 900);
+    })();
+  </script>
+</body>
+</html>
